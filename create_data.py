@@ -19,7 +19,7 @@ for sort in all_implementations:
         data.append([sort.__name__, runtime])
 
 
-df = pd.DataFrame(data, columns=['Algorithm', 'Execution_Time'])
+df = pd.DataFrame(data, columns=['Algorithm', 'Runtime'])
 df.to_csv('data.csv', index=False)
 
 end_total = time.time()
@@ -30,6 +30,6 @@ print(df)
 
 # Plotting the results
 # plotting a scatter plot 
-plt.scatter(df["Algorithm"], df["Execution_Time"]) 
+plt.scatter(df["Algorithm"], df["Runtime"]) 
 plt.show() 
 
