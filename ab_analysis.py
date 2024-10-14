@@ -11,9 +11,25 @@ OUTPUT_TEMPLATE = (
 )
 
 
+def more_users_p_value(control, treatment):
+    
+    control_search_count = (control['search_count'] > 0).sum()
+    control_not_search_count = (control['search_count'] <= 0).sum()
+    
+    treatment_search_count = (treatment['search_count'] > 0).sum()
+    treatment_not_search_count = (treatment['search_count'] <= 0).sum()
+
+    #Format of contigency table adapted from: https://pythonfordatascienceorg.wordpress.com/chi-square-python/
+    table = [[control_search_count, control_not_search_count],
+             [treatment_search_count, treatment_not_search_count]]
+    
+    _, pvalue, _, _ = chi2_contingency(table, correction=False)
+    return pvalue
 
 
-#####CONTINUE AFTER LECTURE
+def more_searches_p_value(control, treatment):
+    _, pvalue = mannwhitneyu(control['search_count'], treatment['search_count'], alternative='two-sided')
+    return pvalue
 
 
 def main():
@@ -21,19 +37,20 @@ def main():
 
     df = pd.read_json(searchdata_file, orient='records', lines=True)
 
-    df['searched'] = df['search_count'] > 0
-    df['group'] = np.where(df['uid'] % 2 == 0, 'even', 'odd') 
+    print(df)
 
+    even = df[df['uid'] % 2 == 0]
+    odd = df[df['uid'] % 2 != 0]
     
+    even_instructor = even[even['is_instructor']]
+    odd_instructor = odd[odd['is_instructor']]
 
-
-    # # Output
-    # print(OUTPUT_TEMPLATE.format(
-    #     more_users_p=0,
-    #     more_searches_p=0,
-    #     more_instr_p=0,
-    #     more_instr_searches_p=0,
-    # ))
+    print(OUTPUT_TEMPLATE.format(
+        more_users_p = more_users_p_value(even, odd),
+        more_searches_p = more_searches_p_value(even, odd),
+        more_instr_p = more_users_p_value(even_instructor, odd_instructor),
+        more_instr_searches_p = more_searches_p_value(even_instructor, odd_instructor)
+    ))
 
 
 if __name__ == '__main__':
