@@ -9,10 +9,9 @@ start_total = time.time()
 
 data = []
 
-
-for sort in all_implementations:
-    for _ in range(45): ##############Increse to right size based on CSIL
-        random_array = np.random.randint(low=-10000, high=10000, size=10000)
+for _ in range(45):
+    random_array = np.random.randint(low=-10000, high=10000, size=10000)
+    for sort in all_implementations: ##############Increse to right size based on CSIL
         st = time.time()
         res = sort(random_array)
         en = time.time()
