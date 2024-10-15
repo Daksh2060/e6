@@ -37,13 +37,15 @@ def main():
 
     df = pd.read_json(searchdata_file, orient='records', lines=True)
 
-    print(df)
+    print(df[df["is_instructor"]].count())
 
     even = df[df['uid'] % 2 == 0]
     odd = df[df['uid'] % 2 != 0]
     
     even_instructor = even[even['is_instructor']]
     odd_instructor = odd[odd['is_instructor']]
+
+    
 
     print(OUTPUT_TEMPLATE.format(
         more_users_p = more_users_p_value(even, odd),
