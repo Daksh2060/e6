@@ -8,10 +8,11 @@ from implementations import all_implementations
 start_total = time.time()
 
 data = []
-random_array = np.random.randint(low=-10000, high=10000, size=10000)
+
 
 for sort in all_implementations:
-    for _ in range(20): ##############Increse to right size based on CSIL
+    for _ in range(45): ##############Increse to right size based on CSIL
+        random_array = np.random.randint(low=-10000, high=10000, size=10000)
         st = time.time()
         res = sort(random_array)
         en = time.time()
